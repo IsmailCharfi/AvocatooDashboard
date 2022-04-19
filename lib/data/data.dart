@@ -42,17 +42,17 @@ List<SliderModel> getSlides(){
   SliderModel sliderModel = new SliderModel(imageAssetPath: '', title: '', desc: '');
 
   //1
-  sliderModel.setDesc("Discover Restaurants offering the best fast food food near you on Foodwa");
+  sliderModel.setDesc("We all look for law Help sometimes but how can I get it ??");
   sliderModel.setTitle("Search");
-  sliderModel.setImageAssetPath("assets/illustration.png");
+  sliderModel.setImageAssetPath("assets/stressed.jpg");
   slides.add(sliderModel);
 
   sliderModel = new SliderModel(imageAssetPath: '', desc: '', title: '');
 
   //2
-  sliderModel.setDesc("Our veggie plan is filled with delicious seasonal vegetables, whole grains, beautiful cheeses and vegetarian proteins");
-  sliderModel.setTitle("Order");
-  sliderModel.setImageAssetPath("assets/illustration2.png");
+  sliderModel.setDesc("Our app will allow you to contact law professionals in real time and get all the help you need within a few clicks");
+  sliderModel.setTitle("Avocatoo");
+  sliderModel.setImageAssetPath("assets/solution.jpg");
   slides.add(sliderModel);
 
   sliderModel =  new SliderModel(imageAssetPath: '', desc: '', title: '');
@@ -60,7 +60,7 @@ List<SliderModel> getSlides(){
   //3
   sliderModel.setDesc("Food delivery or pickup from local restaurants, Explore restaurants that deliver near you.");
   sliderModel.setTitle("Eat");
-  sliderModel.setImageAssetPath("assets/illustration3.png");
+  sliderModel.setImageAssetPath("assets/solution.jpg");
   slides.add(sliderModel);
 
   sliderModel =  new SliderModel(imageAssetPath: '', desc: '', title: '');

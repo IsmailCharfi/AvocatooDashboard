@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:avocatoo_mobile/Pages/loginScreen.dart';
 import 'package:avocatoo_mobile/data/data.dart';
 import 'package:avocatoo_mobile/data/main.dart';
 import 'package:flutter/material.dart';
@@ -79,10 +80,8 @@ class _HomeState extends State<Home> {
                 title: mySLides[1].getTitle(),
                 desc: mySLides[1].getDesc(),
               ),
-              SlideTile(
-                imagePath: mySLides[2].getImageAssetPath(),
-                title: mySLides[2].getTitle(),
-                desc: mySLides[2].getDesc(),
+              Container(
+                child: LoginScreen()
               )
             ],
           ),
@@ -126,13 +125,10 @@ class _HomeState extends State<Home> {
             print("Get Started Now");
           },
           child: Container(
-            height: Platform.isIOS ? 70 : 60,
+            height: Platform.isIOS ? 0 : 0,
             color: Colors.blue,
             alignment: Alignment.center,
-            child: Text(
-              "GET STARTED NOW",
-              style: TextStyle(color: Colors.white, fontWeight: FontWeight.w600),
-            ),
+
           ),
         ),
       ),
@@ -153,8 +149,7 @@ class SlideTile extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          SvgPicture.asset("assets/test1.svg"),
-          //Image.asset(imagePath),
+          Image.asset(imagePath),
           SizedBox(
             height: 40,
           ),
