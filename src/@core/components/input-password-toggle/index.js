@@ -12,6 +12,7 @@ import { InputGroup, Input, InputGroupText, Label } from 'reactstrap'
 const InputPasswordToggle = forwardRef((props, ref) => {
   // ** Props
   const {
+    onChange,
     label,
     hideIcon,
     showIcon,
@@ -53,6 +54,8 @@ const InputPasswordToggle = forwardRef((props, ref) => {
         })}
       >
         <Input
+          onChange={onChange}
+          required
           ref={ref}
           invalid={invalid}
           type={inputVisibility === false ? 'password' : 'text'}
@@ -87,6 +90,7 @@ InputPasswordToggle.propTypes = {
   visible: PropTypes.bool,
   className: PropTypes.string,
   placeholder: PropTypes.string,
+  onChange: PropTypes.func,
   iconSize: PropTypes.number,
   inputClassName: PropTypes.string,
   label(props, propName) {

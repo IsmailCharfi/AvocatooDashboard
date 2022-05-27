@@ -25,6 +25,22 @@ const Routes = [
     }
   },
   {
+    path: '/forgot-password',
+    component: lazy(() => import('../../views/Auth/ForgotPassowrd')),
+    layout: 'BlankLayout',
+    meta: {
+      authRoute: true
+    }
+  },
+  {
+    path: '/reset-password/:hash',
+    component: lazy(() => import('../../views/Auth/ResetPassword')),
+    layout: 'BlankLayout',
+    meta: {
+      authRoute: true
+    }
+  },
+  {
     path: '/error',
     component: lazy(() => import('../../views/Misc/Errors/Error')),
     layout: 'BlankLayout'
