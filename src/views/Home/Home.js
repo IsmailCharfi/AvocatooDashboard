@@ -7,6 +7,7 @@ import {  faScaleBalanced, faQuestion } from '@fortawesome/free-solid-svg-icons'
 import {useHistory} from "react-router-dom"
 
 import '@styles/react/apps/app-users.scss'
+import Stats from './Stats'
 
 const Home = () => {
   const history = useHistory()
@@ -56,6 +57,7 @@ const Home = () => {
             renderStats={<h3 className='fw-bolder mb-75'>237</h3>}
           />
         </Col>
+        <Stats />
       </Row>
     </div>
   </>

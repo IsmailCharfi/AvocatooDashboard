@@ -10,7 +10,7 @@ import { useHttp } from "@hooks/useHttp"
 import { confirm } from '../../utility/Utils'
 import TryAgain from "@components/try-again"
 import env from "react-dotenv"
-
+import { useHistory } from 'react-router-dom'
 const API_PATH = env.API_URL
 
 import '@styles/react/apps/app-invoice.scss'
@@ -74,7 +74,7 @@ const UsersList = () => {
   const [refresh, setRefresh] = useState(false)
   const [firstTime, setFirstTime] = useState(true)
   const [isLoading, error, sendRequest] = useHttp()
-  const [/* row */, setRow] = useState({})
+  const history = useHistory()
 
   useEffect(() => {
 
@@ -131,7 +131,7 @@ const UsersList = () => {
                   pagination
                   paginationServer
                   subHeader={true}
-                  columns={columns(activateUser, deactivateUser, deleteUser, setRow) }
+                  columns={ columns(activateUser, deactivateUser, deleteUser, (e) => { history.push(`/user/${e.id}`) }) }
                   responsive={true}
                   data={users}
                   sortIcon={<ChevronDown size={10} />}

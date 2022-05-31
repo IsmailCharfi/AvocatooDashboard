@@ -85,6 +85,11 @@ const Routes = [
     exact: true
   },
   {
+    path: '/categories',
+    component: lazy(() => import('../../views/Category/Category')),
+    exact: true
+  },
+  {
     path: '/questions',
     component: lazy(() => import('../../views/Home/Home')),
     exact: true

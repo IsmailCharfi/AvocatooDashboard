@@ -23,7 +23,8 @@ const ResetPassword = () => {
     useEffect(() => {
         (async function isHashValid() {
             const url = `${env.API_URL}/auth/reset-password/hash/valid/${hash}`
-            const response = await axios.get(url)
+            const response = await axios.post(url)
+            if (!response) history.push("/")
             const isValid = response.data.isValid
                 if (!isValid) {
                 history.push("/")

@@ -1,27 +1,9 @@
 import Avatar from '@components/avatar'
-import {
-  Badge,
-  DropdownItem,
-  DropdownMenu,
-  DropdownToggle,
-  UncontrolledDropdown
-} from 'reactstrap'
-import {
-  Eye,
-  Edit,
-  Trash,
-  MoreVertical,
-  Unlock,
-  Lock
-} from 'react-feather'  
+import { Badge, DropdownItem, DropdownMenu, DropdownToggle, UncontrolledDropdown } from 'reactstrap'
+import { Eye, Trash, MoreVertical, Unlock, Lock } from 'react-feather'  
 import env from 'react-dotenv'
+import { Link } from 'react-router-dom'
 
-const roles = {
-  ["ROLE_ADMIN"]: { color: 'light-secondary', text: "Admin" },
-  ["ROLE_CLIENT"]: { color: 'light-success', text: "Client" },
-  ["ROLE_LP"]: { color: 'light-primary', text: "Consultant juridique" },
-  ["ROLE_DEV"]: { color: 'light-info', text: "Developperur" }
-}
 
 const renderUser = row => {
   const stateNum = Math.floor(Math.random() * 5),
@@ -43,7 +25,8 @@ export const columns = (activateUser, deactivateUser, deleteUser, getRow) => [
     selector: row => row.firstName,
     cell: row => {
       const fullName = `${row.firstName} ${row.lastName}`
-      return (
+      
+/*       return (
         <div className='d-flex justify-content-left align-items-center'>
           {renderUser(row)}
           <div className='d-flex flex-column'>
@@ -51,6 +34,20 @@ export const columns = (activateUser, deactivateUser, deleteUser, getRow) => [
             <small className='text-truncate text-muted mb-0'>{row.email}</small>
           </div>
         </div>
+      ) */
+      return (
+        <div className='d-flex justify-content-left align-items-center'>
+        {renderUser(row)}
+        <div className='d-flex flex-column'>
+          <Link
+            to={`/user/${row.id}`}
+            className='user_name text-truncate text-body'
+          >
+            <span className='fw-bolder'>{fullName}</span>
+          </Link>
+          <small className='text-truncate text-muted mb-0'>{row.email}</small>
+        </div>
+      </div>
       )
     }
   },
@@ -62,17 +59,10 @@ export const columns = (activateUser, deactivateUser, deleteUser, getRow) => [
     cell: row => row.phoneNumber
   },
   {
-    name: 'Role',
+    name: 'Ajouté le',
     minWidth: '100px',
     center: true,
-    selector: row => row.phoneNumber,
-    cell: row => {
-      return (
-        <Badge color={roles[row.role].color} pill>
-          {roles[row.role].text}
-      </Badge>
-      )
-    }
+    cell: row => new Date(row.createdAt).toLocaleDateString()
   },
   {
     name: 'Compte',
@@ -112,10 +102,6 @@ export const columns = (activateUser, deactivateUser, deleteUser, getRow) => [
             <DropdownItem tag={'div'} className='w-100' onClick={() => getRow(row)}>
               <Eye size={14} className='me-50' />
               <span className='align-middle'>Voir plus</span>
-            </DropdownItem>
-            <DropdownItem tag={'div'} className='w-100'>
-              <Edit size={14} className='me-50' onClick={() => getRow(row)}/>
-              <span className='align-middle'>Modifier</span>
             </DropdownItem>
             <DropdownItem tag='div'className='w-100' onClick={() => deleteUser(row)}>
               <Trash size={14} className='me-50' />

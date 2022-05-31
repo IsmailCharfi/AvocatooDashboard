@@ -10,14 +10,14 @@ import { useHttp } from "@hooks/useHttp"
 import { confirm } from '../../utility/Utils'
 import TryAgain from "@components/try-again"
 import env from "react-dotenv"
-
+import { useHistory } from 'react-router-dom'
 const API_PATH = env.API_URL
 
 import '@styles/react/apps/app-invoice.scss'
 import '@styles/react/libs/tables/react-dataTable-component.scss'
 import '@styles/base/plugins/extensions/ext-component-sweet-alerts.scss'
 
-const CustomHeader = ({ setSearch, search, setRole, role, setTake, take }) => {
+const CustomHeader = ({ setSearch, search, setTake, take }) => {
   return (
     <div className='invoice-list-table-header w-100 py-2'>
       <Row>
@@ -52,34 +52,27 @@ const CustomHeader = ({ setSearch, search, setRole, role, setTake, take }) => {
               placeholder='Recherche'
             />
           </div>
-          <Input className='w-auto ' type='select' value={role} onChange={e => setRole(e.target.value)}>
-            <option value=''>Selectionner un role</option>
-            <option value={"admin"}>Admins</option>
-            <option value='client'>Clients</option>
-            <option value='lp'>Consultant juridique</option>
-          </Input>
         </Col>
       </Row>
     </div>
   )
 }
 
-const UsersList = () => {
+const LpList = () => {
   const [users, setUsers] = useState([])
   const [dataCount, setDataCount] = useState(0)
   const [search, setSearch] = useState('')
   const [page, setPage] = useState(1)
-  const [role, setRole] = useState('')
   const [take, setTake] = useState(10)
   const [refresh, setRefresh] = useState(false)
   const [firstTime, setFirstTime] = useState(true)
   const [isLoading, error, sendRequest] = useHttp()
-  const [/* row */, setRow] = useState({})
+  const history = useHistory()
 
   useEffect(() => {
 
     async function getUsers() {
-        const response = await sendRequest(`${API_PATH}/users${role.length ? `/${role}` : ""}/?page=${page}&take=${take}&search=${search}`)
+        const response = await sendRequest(`${API_PATH}/users/lp/?page=${page}&take=${take}&search=${search}`)
         setUsers(response.data.pageData)
         setDataCount(response.data.meta.itemCount)
         setFirstTime(false)
@@ -87,7 +80,7 @@ const UsersList = () => {
 
     const getDataTimer = setTimeout(getUsers, 400)
     return () => clearTimeout(getDataTimer)
-  }, [page, take, role, search, refresh])
+  }, [page, take, search, refresh])
 
 
   const activateUser = async (row) => {
@@ -117,9 +110,9 @@ const UsersList = () => {
   return (
     <>
       <Breadcrumbs
-        breadCrumbTitle="Utilisateurs"
+        breadCrumbTitle="Consultants juridiques"
         breadCrumbParent="Gestion des utilisateurs"
-        breadCrumbActive="Tous les utilisateurs"
+        breadCrumbActive="Consultants juridiques"
       />
       {  error ? (<TryAgain cb={() => setRefresh(prev => !prev)} />) : (
       <Card >
@@ -131,7 +124,7 @@ const UsersList = () => {
                   pagination
                   paginationServer
                   subHeader={true}
-                  columns={columns(activateUser, deactivateUser, deleteUser, setRow) }
+                  columns={ columns(activateUser, deactivateUser, deleteUser, (e) => { history.push(`/user/${e.id}`) }) }
                   responsive={true}
                   data={users}
                   sortIcon={<ChevronDown size={10} />}
@@ -154,8 +147,7 @@ const UsersList = () => {
                       setSearch={setSearch}
                       take={take}
                       setTake={setTake}
-                      role={role}
-                      setRole={setRole}
+
                     />
                 }
                 progressPending={isLoading}
@@ -171,4 +163,4 @@ const UsersList = () => {
   )
 }
 
-export default UsersList
+export default LpList

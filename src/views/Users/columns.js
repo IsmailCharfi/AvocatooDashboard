@@ -8,7 +8,6 @@ import {
 } from 'reactstrap'
 import {
   Eye,
-  Edit,
   Trash,
   MoreVertical,
   Unlock,
@@ -128,10 +127,6 @@ export const columns = (activateUser, deactivateUser, deleteUser, getRow) => [
             <DropdownItem tag={'div'} className='w-100' onClick={() => getRow(row)}>
               <Eye size={14} className='me-50' />
               <span className='align-middle'>Voir plus</span>
-            </DropdownItem>
-            <DropdownItem tag={'div'} className='w-100'>
-              <Edit size={14} className='me-50' onClick={() => getRow(row)}/>
-              <span className='align-middle'>Modifier</span>
             </DropdownItem>
             <DropdownItem tag='div'className='w-100' onClick={() => deleteUser(row)}>
               <Trash size={14} className='me-50' />
