@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import { columns } from './columns'
 import { ChevronDown } from 'react-feather'
 import DataTable from 'react-data-table-component'
-import {Row, Col, Card, Input, CardHeader, CardTitle} from "reactstrap"
+import {Row, Col, Card, Input, CardHeader, CardTitle, Modal, ModalHeader, ModalBody, Label, Button} from "reactstrap"
 import Breadcrumbs from "@components/breadcrumbs"
 import LoadingSpinner from "@components/spinner/Loading-spinner"
 import CustomPagination from "@components/custom-pagination"
@@ -18,6 +18,33 @@ import '@styles/react/libs/tables/react-dataTable-component.scss'
 import '@styles/base/plugins/extensions/ext-component-sweet-alerts.scss'
 
 const CustomHeader = ({ setSearch, search, setTake, take }) => {
+  const [modal, setModal] = useState(false)
+  const [, , sendRequest] = useHttp()
+
+  const handleSubmit = async (e) => {
+      e.preventDefault()
+      const email = e.target.email.value
+      const password = e.target.password.value
+      const firstName = e.target.firstName.value
+      const lastName = e.target.lastName.value
+
+      const formData = new FormData()
+      formData.append('email', email)
+      formData.append('password', password)
+      formData.append('firstName', firstName)
+      formData.append('lastName', lastName)
+      formData.append('dateOfBirth', new Date().toLocaleDateString())
+      formData.append('phoneNumber', '123456789')
+      formData.append('lpData', JSON.stringify({expertise: []}))
+
+      console.log(formData.forEach((e) => console.log(e)))
+
+      await sendRequest(`${API_PATH}/auth/register/lp`, "POST", formData)
+      setModal(false)
+      toast.success(<>Success</>, {transition: Slide, hideProgressBar: true, autoClose: 1500 })
+      setRefresh(prev => !prev)
+    }
+
   return (
     <div className='invoice-list-table-header w-100 py-2'>
       <Row>
@@ -52,8 +79,60 @@ const CustomHeader = ({ setSearch, search, setTake, take }) => {
               placeholder='Recherche'
             />
           </div>
+          <Button color='primary' onClick={() => setModal(true)}>Ajouter</Button>
         </Col>
       </Row>
+      {
+        modal && (
+          <Modal
+        isOpen={modal}
+        onClosed={() => setModal(false)}
+        toggle={() => setModal(false)}
+        className='modal-dialog-centered modal-lg'
+      >
+        <ModalHeader className='bg-transparent' toggle={() => setModal(false)}></ModalHeader>
+        <ModalBody className='px-5 pb-5'>
+          <div className='text-center mb-4'>
+            <h1>Ajout</h1>
+          </div>
+          <Row tag='form' onSubmit={handleSubmit}>
+            <Col xs={6}>
+              <Label className='form-label' for='roleName'>
+                Email
+              </Label>
+              <Input name="email" id='email' placeholder='email' type='email' />
+            </Col>
+            <Col xs={6}>
+              <Label className='form-label' for='roleName'>
+                mot de passe
+              </Label>
+              <Input name="password" id='passwrd' placeholder='mot de passe' type="password" />
+            </Col>
+            <Col xs={6}>
+              <Label className='form-label' for='roleName'>
+                Nom
+              </Label>
+              <Input name="lastName" id='name' placeholder='nom' />
+            </Col>
+            <Col xs={6}>
+              <Label className='form-label' for='roleName'>
+                Prenom
+              </Label>
+              <Input name="firstName" id='lastname' placeholder='prenom' />
+            </Col>
+            <Col className='text-center mt-2' xs={12}>
+              <Button type='submit' color='primary' className='me-1'>
+                Confirmer
+              </Button>
+              <Button type='reset' outline onClick={() => setModal(false)}>
+                Annuler
+              </Button>
+            </Col>
+          </Row>
+        </ModalBody>
+      </Modal>
+        )
+      }
     </div>
   )
 }
@@ -63,7 +142,7 @@ const LpList = () => {
   const [dataCount, setDataCount] = useState(0)
   const [search, setSearch] = useState('')
   const [page, setPage] = useState(1)
-  const [take, setTake] = useState(10)
+  const [take, setTake] = useState(20)
   const [refresh, setRefresh] = useState(false)
   const [firstTime, setFirstTime] = useState(true)
   const [isLoading, error, sendRequest] = useHttp()
