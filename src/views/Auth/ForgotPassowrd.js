@@ -10,16 +10,19 @@ import axios from "axios"
 import "@styles/react/pages/page-authentication.scss"
 import env from "react-dotenv"
 import { Slide, toast } from "react-toastify"
+import { useRef, useState } from "react"
 
 const ForgotPassword = () => {
 
     const history = useHistory()
+    const [disabled, setDisabled] = useState(false)
+    const submitButton = useRef()
     
-    const handleSubmit = (evt) => {
+    const handleSubmit = async (evt) => {
         evt.preventDefault()
         const url = `${env.API_URL}/mail/send/reset-password`
         const email = evt.target.email.value
-        axios.post(url, { email })
+        await axios.post(url, { email })
         history.push("/login")
         toast.success(
             <div className="toastify-header">
@@ -67,9 +70,10 @@ const ForgotPassword = () => {
                   required
                 />
               </div>
-              <Button color="primary" type="submit" block>
+              <Button color="primary" block disabled={disabled} onClick={ () => { setDisabled(true); submitButton.current.click() }}>
                 Envoyer
               </Button>
+              <input ref={submitButton} type="submit" hidden />
             </Form>
             <p className="text-center mt-2">
               <Link to="/login">

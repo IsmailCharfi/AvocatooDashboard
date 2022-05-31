@@ -1,48 +1,64 @@
-import { Card, CardHeader, CardBody, CardTitle, CardText, CardLink } from 'reactstrap'
+import { Row, Col } from 'reactstrap'
+import StatsHorizontal from '@components/widgets/stats/StatsHorizontal'
+import { User, UserPlus, UserCheck, UserX, Users } from 'react-feather'
+import Breadcrumbs from "@components/breadcrumbs"
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import {  faScaleBalanced, faQuestion } from '@fortawesome/free-solid-svg-icons'
+import {useHistory} from "react-router-dom"
+
+import '@styles/react/apps/app-users.scss'
 
 const Home = () => {
-  return (
-    <div>
-      <Card>
-        <CardHeader>
-          <CardTitle>Kick start your project 🚀</CardTitle>
-        </CardHeader>
-        <CardBody>
-          <CardText>All the best for your new project.</CardText>
-          <CardText>
-            Please make sure to read our{' '}
-            <CardLink
-              href='https://pixinvent.com/demo/vuexy-react-admin-dashboard-template/documentation/'
-              target='_blank'
-            >
-              Template Documentation
-            </CardLink>{' '}
-            to understand where to go from here and how to use our template.
-          </CardText>
-        </CardBody>
-      </Card>
+  const history = useHistory()
 
-      <Card>
-        <CardHeader>
-          <CardTitle>Want to integrate JWT? 🔒</CardTitle>
-        </CardHeader>
-        <CardBody>
-          <CardText>
-            We carefully crafted JWT flow so you can implement JWT with ease and with minimum efforts.
-          </CardText>
-          <CardText>
-            Please read our{' '}
-            <CardLink
-              href='https://pixinvent.com/demo/vuexy-react-admin-dashboard-template/documentation/docs/development/auth'
-              target='_blank'
-            >
-              JWT Documentation
-            </CardLink>{' '}
-            to get more out of JWT authentication.
-          </CardText>
-        </CardBody>
-      </Card>
+  return (
+    <>
+      <Breadcrumbs
+        breadCrumbTitle="Acceuil"
+        breadCrumbParent="Home"
+        breadCrumbActive="stats"
+      />
+    <div className='app-user-list'>
+      <Row>
+        <Col lg='3' sm='6'>
+          <StatsHorizontal
+            color='primary'
+            statTitle='Utilisateurs'
+            icon={<Users size={20} />}
+            onClick={() => history.push("/users")}
+            renderStats={<h3 className='fw-bolder mb-75'>990</h3>}
+          />
+        </Col>
+        <Col lg='3' sm='6'>
+          <StatsHorizontal
+            color='danger'
+            statTitle='Consultants juridique'
+            icon={<FontAwesomeIcon icon={faScaleBalanced} />}
+            onClick={() => history.push("/users/lp")}
+            renderStats={<h3 className='fw-bolder mb-75'>78</h3>}
+          />
+        </Col>
+        <Col lg='3' sm='6'>
+          <StatsHorizontal
+            color='success'
+            statTitle='Clients'
+            icon={<User size={20} />}
+            onClick={() => history.push("/users/client")}
+            renderStats={<h3 className='fw-bolder mb-75'>919</h3>}
+          />
+        </Col>
+        <Col lg='3' sm='6'>
+          <StatsHorizontal
+            color='warning'
+            statTitle='Questions posées'
+            icon={<FontAwesomeIcon icon={faQuestion} />}
+            onClick={() => history.push("/questions")}
+            renderStats={<h3 className='fw-bolder mb-75'>237</h3>}
+          />
+        </Col>
+      </Row>
     </div>
+  </>
   )
 }
 

@@ -5,7 +5,7 @@ import classnames from 'classnames'
 // ** Reactstrap Imports
 import { Card, CardBody } from 'reactstrap'
 
-const StatsHorizontal = ({ icon, color, stats, renderStats, statTitle, className, statsMargin }) => {
+const StatsHorizontal = ({ icon, color, stats, renderStats, statTitle, className, statsMargin, onClick }) => {
   return (
     <Card>
       <CardBody className={className}>
@@ -26,7 +26,7 @@ const StatsHorizontal = ({ icon, color, stats, renderStats, statTitle, className
 
             <p className='card-text'>{statTitle}</p>
           </div>
-          <div className={`avatar avatar-stats p-50 m-0 ${color ? `bg-light-${color}` : 'bg-light-primary'}`}>
+          <div className={`avatar avatar-stats p-50 m-0 ${color ? `bg-light-${color}` : 'bg-light-primary'}`} onClick={onClick}>
             <div className='avatar-content'>{icon}</div>
           </div>
         </div>
@@ -39,6 +39,7 @@ export default StatsHorizontal
 
 // ** PropTypes
 StatsHorizontal.propTypes = {
+  onClick: PropTypes.func,
   stats: PropTypes.string,
   renderStats: PropTypes.any,
   className: PropTypes.string,

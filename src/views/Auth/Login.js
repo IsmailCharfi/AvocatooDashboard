@@ -5,17 +5,18 @@ import { Row, Col, CardTitle, Form, Label, Input, Button } from 'reactstrap'
 import { toast, Slide } from 'react-toastify'
 import Avatar from '@components/avatar'
 
-import config from '@configs/themeConfig'
 import '@styles/react/pages/page-authentication.scss'
 import { Brand } from '../../assets/svg/brand'
-
 import useJwt from '@src/auth/jwt/useJwt'
 import { useDispatch } from 'react-redux'
 import { useForm, Controller } from 'react-hook-form'
 import { handleLogin } from '@store/authentication'
 import { Fragment } from 'react'
-import { Coffee } from 'react-feather'
+import { Bell, Coffee, X } from 'react-feather'
 import { isUserLoggedIn } from '../../auth/utils'
+import config from '../../configs/themeConfig'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faHandsClapping } from '@fortawesome/free-solid-svg-icons'
 
 
 const LoginCover = () => {
@@ -28,7 +29,7 @@ const LoginCover = () => {
     setError,
     handleSubmit,
     formState: { errors }
-  } = useForm()
+  } = useForm({defaultValues: {loginEmail: "", password: ""}})
 
   const illustration = skin === 'dark' ? 'login-v2-dark.svg' : 'login-v2.svg',
     source = require(`@src/assets/images/pages/${illustration}`).default
@@ -38,12 +39,9 @@ const LoginCover = () => {
       <Fragment>
         <div className='toastify-header'>
           <div className='title-wrapper'>
-            <Avatar size='sm' color='success' icon={<Coffee size={12} />} />
-            <h6 className='toast-title fw-bold'>Welcome, {name}</h6>
+            <Avatar size='sm' color='success' icon={<FontAwesomeIcon icon={faHandsClapping}/>} />
+            <h6 className='toast-title fw-bold'>Bonjour, {name}</h6>
           </div>
-        </div>
-        <div className='toastify-body'>
-          <span>Happy to see you again.</span>
         </div>
       </Fragment>
     )
@@ -53,17 +51,30 @@ const LoginCover = () => {
         useJwt
           .login({ email: data.loginEmail, password: data.password })
           .then(res => {
-            const data = { ...res.data.userData, accessToken: res.data.accessToken, refreshToken: res.data.refreshToken }
+            const data = { ...res.data.data.userData, accessToken: res.data.data.accessToken }
             dispatch(handleLogin(data))
             history.push("/")
             if (isUserLoggedIn()) {
               toast.success(
-                <ToastContent name={data.fullName || data.username || 'Avocatoo'} />,
+                <ToastContent name={data.firstName || config.app.appName} />,
                 { icon: false, transition: Slide, hideProgressBar: true, autoClose: 1500 }
               )
             }
           })
-          .catch(err => console.log(err))
+          .catch(error => {
+            setError("loginEmail")
+            setError("password")
+            toast.error(
+              <div className="toastify-header">
+                <div className="title-wrapper">
+                  <Avatar size="sm" color="danger" icon={<X size={12} />} />
+                  <h6 className="toast-title fw-bold">{error.response.data.message}</h6>
+                </div>
+              </div>,
+              { icon: false, transition: Slide, hideProgressBar: true, autoClose: 5000 }
+            )
+
+          })
       } else {
         for (const key in data) {
           if (data[key].length === 0) {
@@ -90,8 +101,9 @@ const LoginCover = () => {
         <Col className='d-flex align-items-center auth-bg px-2 p-lg-5' lg='4' sm='12'>
           <Col className='px-xl-2 mx-auto' sm='8' md='6' lg='12'>
             <div className="d-flex justify-content-center">
-            <CardTitle tag='h2' className='fw-bold mb-1'>
-              Avocatoo Dashboard
+            <CardTitle tag='h2' className='brand-text text-primary fw-bold mb-1'>
+            <Brand className="me-1" />
+            Avocatoo Dashboard
             </CardTitle>
             </div>
             <Form className='auth-login-form mt-2' onSubmit={handleSubmit(onSubmit)}>
@@ -111,7 +123,7 @@ const LoginCover = () => {
                       invalid={errors.loginEmail && true}
                       {...field}
                     />
-                  )}
+                  ) }
                 />
               </div>
               <div className='mb-1'>

@@ -1,6 +1,6 @@
-export const Brand = () => (
+export const Brand = ({className}) => (
 
-<svg viewBox='0 0 139 95' version='1.1' height='28'>
+<svg viewBox='0 0 139 95' version='1.1' height='28' className={className}>
             <defs>
               <linearGradient x1='100%' y1='10.5120544%' x2='50%' y2='89.4879456%' id='linearGradient-1'>
                 <stop stopColor='#000000' offset='0%'></stop>

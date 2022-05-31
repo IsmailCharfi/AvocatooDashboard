@@ -17,14 +17,13 @@ const ResetPassword = () => {
     hash = decodeURIComponent(hash)
     const history = useHistory()
     const [isLoading, setIsLoading] = useState(true)
-    const [userId, setUserId] = useState("")
     const [password, setPassword] = useState("")
     const [confirmPassword, setComfirmPassword] = useState("")
 
     useEffect(() => {
         (async function isHashValid() {
-            const url = `${env.API_URL}/auth/reset-password/hash/valid`
-            const response = await axios.post(url, {hash})
+            const url = `${env.API_URL}/auth/reset-password/hash/valid/${hash}`
+            const response = await axios.get(url)
             const isValid = response.data.isValid
                 if (!isValid) {
                 history.push("/")
@@ -38,7 +37,6 @@ const ResetPassword = () => {
                 { icon: false, transition: Slide, hideProgressBar: true, autoClose: 2000 }
                 )
             }
-            setUserId(response.data.id)
             setIsLoading(false)
         })()
     }, [])
@@ -47,12 +45,12 @@ const ResetPassword = () => {
         e.preventDefault()
         const url = `${env.API_URL}/auth/reset-password`
         if (password === confirmPassword) { 
-            await axios.post(url, {id:userId, password, hash})
+            await axios.post(url, {password, hash})
                 history.push("/")
-                toast.error(
+                toast.success(
                     <div className="toastify-header">
                     <div className="title-wrapper">
-                        <Avatar size="sm" color="danger" icon={<Mail size={12} />} />
+                        <Avatar size="sm" color="success" icon={<Lock size={12} />} />
                         <h6 className="toast-title fw-bold">Mot de passe réinitialisé</h6>
                     </div>
                     </div>,

@@ -6,6 +6,9 @@
     "@casl/ability": "^5.2.2",
     "@casl/react": "^2.1.1",
     "@craco/craco": "^6.4.2",
+    "@fortawesome/fontawesome-svg-core": "^6.1.1",
+    "@fortawesome/free-solid-svg-icons": "^6.1.1",
+    "@fortawesome/react-fontawesome": "^0.1.18",
     "@fullcalendar/core": "^5.10.1",
     "@fullcalendar/daygrid": "^5.10.1",
     "@fullcalendar/interaction": "^5.10.1",
@@ -80,7 +83,7 @@
     "screenfull": "^5.0.2",
     "sortablejs": "^1.12.0",
     "styled-components": "^5.1.1",
-    "sweetalert2": "^11.1.9",
+    "sweetalert2": "^11.4.17",
     "sweetalert2-react-content": "^4.2.0",
     "swiper": "^7.2.0",
     "wnumb": "^1.2.0",
@@ -119,7 +122,10 @@
     ]
   },
   "react-dotenv": {
-    "whitelist": ["API_URL", "APP_NAME"]
+    "whitelist": [
+      "API_URL",
+      "APP_NAME"
+    ]
   },
   "homepage": ""
 }

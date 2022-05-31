@@ -1,60 +1,79 @@
 // ** React Imports
-import { Link, useHistory } from 'react-router-dom'
-import { useState } from 'react'
+import { Link } from 'react-router-dom'
+import { useEffect, useState } from 'react'
 import { handleLogout } from '@store/authentication'
 import { useDispatch } from 'react-redux'
-
 
 // ** Custom Components
 import Avatar from '@components/avatar'
 
 // ** Utils
-// import { isUserLoggedIn } from '@utils'
+import { isUserLoggedIn } from '@utils'
 
 // ** Third Party Components
-import { User, Mail, CheckSquare, MessageSquare, Settings, CreditCard, HelpCircle, Power } from 'react-feather'
+import { User, Settings, Power, Bell } from 'react-feather'
 
 // ** Reactstrap Imports
 import { UncontrolledDropdown, DropdownMenu, DropdownToggle, DropdownItem } from 'reactstrap'
-
-// ** Default Avatar Image
-import defaultAvatar from '@src/assets/images/portrait/small/avatar-s-11.jpg'
+import SpinnerComponent from '../../../components/spinner/Fallback-spinner'
+import { Slide, toast } from 'react-toastify'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faHandsClapping } from '@fortawesome/free-solid-svg-icons'
 
 const UserDropdown = () => {
   // ** State
-  const [userData] = useState(null)
+  const [userData, setUserData] = useState(null)
   const dispatch = useDispatch()
-  const history = useHistory()
 
-  //** ComponentDidMount
-  // useEffect(() => {
-  //   if (isUserLoggedIn() !== null) {
-  //     setUserData(JSON.parse(localStorage.getItem('userData')))
-  //   }
-  // }, [])
+  // ComponentDidMount
+  useEffect(() => {
+    if (isUserLoggedIn() !== null) {
+      setUserData(JSON.parse(localStorage.getItem('userData')))
+    }
+  }, [])
 
-  //** Vars
-  const userAvatar = (userData && userData.avatar) || defaultAvatar
+  
+  if (!userData) {
+    return <SpinnerComponent />
+  }
+
+  const userName = `${userData["firstName"]} ${userData["lastName"]}`
 
   return (
     <UncontrolledDropdown tag='li' className='dropdown-user nav-item'>
       <DropdownToggle href='/' tag='a' className='nav-link dropdown-user-link' onClick={e => e.preventDefault()}>
         <div className='user-nav d-sm-flex d-none'>
-          <span className='user-name fw-bold'>{(userData && userData['username']) || 'John Doe'}</span>
-          <span className='user-status'>{(userData && userData.role) || 'Admin'}</span>
+          <span className='user-name fw-bold h5' style={{marginTop: "0.5rem"}}>{userName}</span>
         </div>
-        <Avatar img={userAvatar} imgHeight='40' imgWidth='40' status='online' />
+        <Avatar color='light-success'  content={userName} initials status={'online'}/>
       </DropdownToggle>
       <DropdownMenu end>
-        <DropdownItem tag='a' href='/pages/profile' onClick={e => e.preventDefault()}>
+        <DropdownItem tag={Link} to='/profile' >
           <User size={14} className='me-75' />
           <span className='align-middle'>Profile</span>
         </DropdownItem>
-        <DropdownItem tag='a' href='/pages/account-settings' onClick={e => e.preventDefault()}>
+        <DropdownItem tag={Link} to="/settings" >
           <Settings size={14} className='me-75' />
           <span className='align-middle'>Settings</span>
         </DropdownItem>
-        <DropdownItem tag={Link} to='/login' onClick={() => { dispatch(handleLogout()); history.push("/login") }}>
+        <DropdownItem 
+          tag={Link} 
+          to='/login' 
+          onClick={ () => { 
+            dispatch(handleLogout({id: userData.id}))
+            toast.success(      
+            <>
+              <div className='toastify-header'>
+                <div className='title-wrapper'>
+                  <Avatar size='sm' color='success' icon={<FontAwesomeIcon icon={faHandsClapping} />} />
+                  <h6 className='toast-title fw-bold'>Au revoir</h6>
+                </div>
+              </div>
+            </>,
+            { icon: false, transition: Slide, hideProgressBar: true, autoClose: 1500 }
+            ) 
+          } }
+        >
           <Power size={14} className='me-75' />
           <span className='align-middle'>Logout</span>
         </DropdownItem>

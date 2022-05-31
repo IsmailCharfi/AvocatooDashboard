@@ -1,3 +1,7 @@
+import Swal from 'sweetalert2'
+import withReactContent from 'sweetalert2-react-content'
+const MySwal = withReactContent(Swal)
+
 // ** Checks if an object is empty (returns boolean)
 export const isObjEmpty = obj => Object.keys(obj).length === 0
 
@@ -77,3 +81,40 @@ export const selectThemeColors = theme => ({
     neutral30: '#ededed' // for input hover border-color
   }
 })
+
+
+export const confirm = async (message, icon, cb) => {
+  const result = await MySwal.fire({
+    title: '',
+    text: `êtes vous sûr de ${message}`,
+    icon,
+    showCancelButton: true,
+    cancelButtonText: "Annuler",
+    confirmButtonText: 'Confirmer',
+    customClass: {
+      confirmButton: 'btn btn-primary',
+      cancelButton: 'btn btn-outline-danger ms-1'
+    },
+    buttonsStyling: false
+  })
+  if (result.value) {
+    try {
+      cb()
+      MySwal.fire({
+        icon: 'success',
+        text: 'Opération faite avec succés',
+        customClass: {
+          confirmButton: 'btn btn-success'
+        }
+      })
+    } catch {
+      MySwal.fire({
+        text: 'une erreur est survenue',
+        icon: 'error',
+        customClass: {
+          confirmButton: 'btn btn-success'
+        }
+      })
+    }
+  }
+}

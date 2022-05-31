@@ -8,7 +8,7 @@
 
 // eslint-disable-next-line arrow-body-style
 export const isUserLoggedIn = () => {
-  return localStorage.getItem('userData') && localStorage.getItem("accessToken") && getUserData().roles.includes("ROLE_ADMIN")
+  return localStorage.getItem('userData') && localStorage.getItem("accessToken") && getUserData().role === "ROLE_ADMIN"
 }
 
 /**
