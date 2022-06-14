@@ -16,6 +16,7 @@ const API_PATH = env.API_URL
 import '@styles/react/apps/app-invoice.scss'
 import '@styles/react/libs/tables/react-dataTable-component.scss'
 import '@styles/base/plugins/extensions/ext-component-sweet-alerts.scss'
+import { Slide, toast } from 'react-toastify'
 
 const CustomHeader = ({ setSearch, search, setTake, take }) => {
   const [modal, setModal] = useState(false)
@@ -39,7 +40,7 @@ const CustomHeader = ({ setSearch, search, setTake, take }) => {
 
       console.log(formData.forEach((e) => console.log(e)))
 
-      await sendRequest(`${API_PATH}/auth/register/lp`, "POST", formData)
+      await sendRequest(`${API_PATH}/auth/register/lp`, "POST", formData, {'Content-Type': 'multipart/form-data'})
       setModal(false)
       toast.success(<>Success</>, {transition: Slide, hideProgressBar: true, autoClose: 1500 })
       setRefresh(prev => !prev)

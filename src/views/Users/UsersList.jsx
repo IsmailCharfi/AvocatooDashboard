@@ -17,7 +17,7 @@ import '@styles/react/apps/app-invoice.scss'
 import '@styles/react/libs/tables/react-dataTable-component.scss'
 import '@styles/base/plugins/extensions/ext-component-sweet-alerts.scss'
 
-const CustomHeader = ({ setSearch, search, setRole, role, setTake, take }) => {
+const CustomHeader = ({ setSearch, search, setRole, role, setTake, take, setPage }) => {
   return (
     <div className='invoice-list-table-header w-100 py-2'>
       <Row>
@@ -52,7 +52,7 @@ const CustomHeader = ({ setSearch, search, setRole, role, setTake, take }) => {
               placeholder='Recherche'
             />
           </div>
-          <Input className='w-auto ' type='select' value={role} onChange={e => setRole(e.target.value)}>
+          <Input className='w-auto ' type='select' value={role} onChange={e => { setPage(1); setRole(e.target.value) } }>
             <option value=''>Selectionner un role</option>
             <option value={"admin"}>Admins</option>
             <option value='client'>Clients</option>
@@ -156,6 +156,7 @@ const UsersList = () => {
                       setTake={setTake}
                       role={role}
                       setRole={setRole}
+                      setPage={setPage}
                     />
                 }
                 progressPending={isLoading}

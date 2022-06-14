@@ -1,12 +1,12 @@
 import { useState, useCallback, useRef, useEffect } from 'react'
 
-function getDefaultHeaders(options) {
+function getDefaultHeaders(body) {
     const headers = new Headers()
     const token = localStorage.getItem('accessToken').replaceAll("\"", "")
     headers.append("Authorization", `Bearer ${token}` ?? '')
 
-    const body = options?.body
     const isFormData = body ? (body instanceof FormData) : false
+    console.log(isFormData)
 
     if (!isFormData) {
         headers.append("Content-Type", isFormData ? 'multipart/form-data' : 'application/json')
@@ -22,18 +22,17 @@ export const useHttp = () => {
   const activeHttpRequests = useRef([])
 
   const sendRequest = useCallback(
-    async (url, method = "GET", body = null,  ...options) => {
+    async (url, method = "GET", body = null) => {
 
       setIsLoading(true)
       const httpAbortCtrl = new AbortController()
       activeHttpRequests.current.push(httpAbortCtrl)
-      const headers = getDefaultHeaders(options)
+      const headers = getDefaultHeaders(body)
 
       try {
         const response = await fetch(url, {
           method,
           body,
-          ...options,
           headers,
           signal: httpAbortCtrl.signal
         })
